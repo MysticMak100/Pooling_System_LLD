@@ -1,0 +1,60 @@
+Start by asking questions to clarify the problem:
+
+What type of resources are we pooling? (e.g., threads, database connections, objects)
+How will the resources be used and by whom? (e.g., multiple users or processes)
+Are there specific limits on the number of resources?
+What happens when all resources are in use? Do we block new requests, queue them, or fail them?
+Example clarification for a connection pooling system:
+
+The system manages a fixed number of database connections.
+Multiple clients can request a connection to the database.
+The pool should provide a connection if one is available; if not, the client may wait or fail.
+2. Identify Key Components
+Break the problem into core components of the system:
+
+Pool Manager: Manages the lifecycle of resources (creation, allocation, and release).
+Resource/Connection Object: Represents the resource (e.g., a database connection).
+Client/Consumer: Requests and releases resources from the pool.
+Queue/Blocking Mechanism: Manages requests when no resources are available.
+3. Define Key Operations
+List the core operations for the system:
+
+Create Resource: Initializes a new resource when the pool is below the limit.
+Acquire Resource: Provides a resource to a client, waits if none are available.
+Release Resource: Returns a resource to the pool after usage.
+Destroy Resource: Cleans up the resources when no longer needed (e.g., closing a connection).
+4. Basic Workflow
+Explain how the system works:
+
+A client requests a resource from the pool.
+The pool checks if an available resource exists.
+If yes, the client is given the resource.
+If no, and the pool limit is reached, the client is either blocked (if blocking is allowed) or an exception is thrown.
+Once the client is done with the resource, it releases it back to the pool.
+The pool manager keeps track of used and available resources.
+5. Class Design (UML or Pseudocode)
+Design the system using simple classes and their interactions:
+
+Classes:
+ResourcePool
+
+Attributes:
+maxPoolSize: Maximum number of resources allowed in the pool.
+availableResources: List of resources available for use.
+inUseResources: Set of resources currently being used.
+Methods:
+getResource(): To acquire a resource.
+releaseResource(resource): To release the resource back to the pool.
+Resource (Connection)
+
+Attributes:
+id: Unique identifier for the resource.
+Methods:
+connect(): Establishes a connection.
+disconnect(): Closes the connection.
+Client
+
+Methods:
+requestResource(pool): Requests a resource from the pool.
+useResource(resource): Uses the resource.
+returnResource(pool, resource): Returns the resource back to the pool
